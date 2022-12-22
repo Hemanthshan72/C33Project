@@ -88,8 +88,9 @@ function setup() {
   
   //button2.mouseClick(drop);
 
-  button2.mouseClicked(drop);
+  button2.mouseClicked(drop2);
 
+  button.mouseClicked(drop);
   ellipseMode(RADIUS);
 }
 
@@ -111,7 +112,7 @@ function draw()
   rope.show();
   rope2.show();
 
-  if(collide(fruit,bunny,80)==true)
+  if(collideX(fruit,bunny,80)==true)
   {
    remove_rope();
    bubble.visible = false;
@@ -125,8 +126,13 @@ function draw()
 
     //bunny.Animation('eating');
   }
+
+  if(collide(fruit,ground.body)==true )
+  {
+     bunny.changeAnimation('crying');
+    }
   
-  if(collide(fruit,bubble,40) == true)
+  if(collideX(fruit,bubble,40) == true)
     {
       engine.world.gravity.y = -1;
       bubble.position.x = fruit.position.x;
@@ -137,11 +143,19 @@ function draw()
 
 }
 
-function drop()
+function drop2()
 {
   rope2.break();
   con2.dettach();
   con2 = null; 
+}
+
+
+function drop()
+{
+  rope.break();
+  con.dettach();
+  con = null; 
 }
 
 function remove_rope()
@@ -151,7 +165,7 @@ function remove_rope()
   con = null; 
 }
 
-function collide(body,sprite,x)
+function collideX(body,sprite,x)
 {
   if(body!=null)
         {
@@ -166,4 +180,23 @@ function collide(body,sprite,x)
             }
          }
 }
+
+
+function collide(body,sprite)
+{
+  if(body!=null)
+        {
+         var d = dist(body.position.x,body.position.y,sprite.position.x,sprite.position.y);
+          if(d<=80)
+            {
+              World.remove(engine.world,fruit);
+               fruit = null;
+               return true; 
+            }
+            else{
+              return false;
+            }
+         }
+}
+
 
